@@ -1,0 +1,160 @@
+from typing import List
+
+class Solution:
+    def solve(self, board, curr_word, needed_len, i, j, word, sols,previous_node_location):
+        print(i, j)
+        # print(word)
+        print(previous_node_location)
+        if previous_node_location == [-1, -1]: previous_node_location = [i, j]
+        if i == previous_node_location[0] and j == previous_node_location[1]:
+            print("match")
+            return
+        
+        
+        s = [i for i in curr_word]
+        len_curr_word = len(s)
+        print(board[i][j])
+        s.append(board[i][j])
+        len_curr_word = len(s)
+        if len(s) == needed_len:
+            print("Found solution")
+            sols.append(s)
+            return 
+        print(len(board), len(board[0])-1)
+        if i != 0 and i != len(board)-1 and j != 0 and j != len(board[0])-1:
+            # curr_word += solve(board, curr_word, needed_len, (i-1, j))
+            # curr_word += solve(board, curr_word, needed_len, (i, j-1))
+            # curr_word += solve(board, curr_word, needed_len, (i+1, j))
+            # curr_word += solve(board, curr_word, needed_len, (i, j+1))
+            
+            # up
+            if board[i-1][j] == word[len_curr_word]:
+                self.solve(board, s, needed_len, i-1, j, word, sols,[i, j])
+            # left
+            if board[i][j-1] == word[len_curr_word]:
+                self.solve(board, s, needed_len, i, j-1, word, sols,[i, j])
+            # down
+            if board[i+1][j] == word[len_curr_word]:
+                self.solve(board, s, needed_len, i+1, j, word, sols,[i, j])
+            # right
+            if board[i][j+1] == word[len_curr_word]:
+                self.solve(board, s, needed_len, i, j+1, word, sols,[i, j])
+            
+        elif i==0 and j == 0: # top left
+            # right
+            if board[i][j+1] == word[len_curr_word]:
+                board[i][j+1]
+                self.solve(board, s, needed_len, i, j+1, word, sols,[i, j])
+            # down
+            if board[i+1][j] == word[len_curr_word]:
+                board[i+1][j]
+                self.solve(board, s, needed_len, i+1, j, word, sols,[i, j])
+        
+        elif i == 0 and j == len(board[0])-1: # top right
+            # left
+            if board[i][j-1] == word[len_curr_word]:
+                board[i][j-1]
+                self.solve(board, s, needed_len, i, j-1, word, sols,[i, j])
+            # down
+            if board[i+1][j] == word[len_curr_word]:
+                board[i+1][j]
+                self.solve(board, s, needed_len, i+1, j, word, sols,[i, j])
+            
+        elif i == 0: # side top
+            print("Sdie tope")
+            # left
+            if board[i][j-1] == word[len_curr_word]:
+                board[i][j-1]
+                self.solve(board, s, needed_len, i, j-1, word, sols,[i, j])
+            # down
+            if board[i+1][j] == word[len_curr_word]:
+                board[i+1][j]
+                self.solve(board, s, needed_len, i+1, j, word, sols,[i, j])
+            # right
+            if board[i][j+1] == word[len_curr_word]:
+                board[i][j+1]
+                self.solve(board, s, needed_len, i, j+1, word, sols,[i, j])
+            
+        elif j == 0 and i == len(board)-1: # bottom left
+            # right
+            if board[i][j+1] == word[len_curr_word]:
+                board[i][j+1]
+                self.solve(board, s, needed_len, i, j+1, word, sols,[i, j])
+            # up
+            if board[i-1][j] == word[len_curr_word]:
+                board[i-1][j]
+                self.solve(board, s, needed_len, i-1, j, word, sols,[i, j])
+                
+        elif j == 0 and i != len(board)-1: # side left
+            # right
+            if board[i][j+1] == word[len_curr_word]:
+                board[i][j+1]
+                self.solve(board, s, needed_len, i, j+1, word, sols,[i, j])
+            # up
+            if board[i-1][j] == word[len_curr_word]:
+                board[i-1][j]
+                self.solve(board, s, needed_len, i-1, j, word, sols,[i, j])
+            # down
+            if board[i+1][j] == word[len_curr_word]:
+                board[i+1][j]
+                self.solve(board, s, needed_len, i+1, j, word, sols,[i, j])
+                
+        elif i == len(board)-1 and j != len(board[0])-1: # side down
+            # right
+            if board[i][j+1] == word[len_curr_word]:
+                board[i][j+1]
+                self.solve(board, s, needed_len, i, j+1, word, sols,[i, j])
+            # up
+            if board[i-1][j] == word[len_curr_word]:
+                board[i-1][j]
+                self.solve(board, s, needed_len, i-1, j, word, sols,[i, j])
+            # left
+            if board[i][j-1] == word[len_curr_word]:
+                board[i][j-1]
+                self.solve(board, s, needed_len, i, j-1, word, sols,[i, j])
+                
+        elif i == len(board)-1 and j == len(board[0]) -1 : # bottom right
+            # up
+            if board[i-1][j] == word[len_curr_word]:
+                board[i-1][j]
+                self.solve(board, s, needed_len, i-1, j, word, sols,[i, j])
+            # left
+            if board[i][j-1] == word[len_curr_word]:
+                board[i][j-1]
+                self.solve(board, s, needed_len, i, j-1, word, sols,[i, j])
+
+        elif j == len(board[0])-1 and i != len(board)-1: # side right
+            print("Side right")
+            # up
+            if board[i-1][j] == word[len_curr_word]:
+                board[i-1][j]
+                self.solve(board, s, needed_len, i-1, j, word, sols,[i, j])
+            # left
+            if board[i][j-1] == word[len_curr_word]:
+                board[i][j-1]
+                self.solve(board, s, needed_len, i, j-1, word, sols,[i, j])
+            # down
+            if board[i+1][j] == word[len_curr_word]:
+                board[i+1][j]
+                self.solve(board, s, needed_len, i+1, j, word, sols,[i, j])
+
+
+
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        sols = []
+        r = len(board)
+        w = len(board[0])
+        len_word = len(word)
+        
+        for i in range(r):
+            for j in range(w):
+                
+                if board[i][j] == word[0]:
+                    print("-"*100)
+                    curr_word = ""
+                    self.solve(board, curr_word, len_word, i, j, word, sols, [-1, -1])
+        print(sols)
+        return len(sols) > 0
+    
+hi = Solution()
+print(hi.exist(board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"))
